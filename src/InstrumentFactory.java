@@ -1,5 +1,7 @@
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
 /**
@@ -16,7 +18,7 @@ public class InstrumentFactory {
         map.put(InstrumentType.BALALAIKA.toString(), Balalaika::new);
     }
 
-    public StringInstrument getInstrument(String type) {
+    public StringInstrument getStringInstrument(String type) {
 
         Supplier<StringInstrument> instrumentSupplier = map.get(type);
 

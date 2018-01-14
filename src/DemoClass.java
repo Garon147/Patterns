@@ -14,20 +14,53 @@ public class DemoClass {
 
     public static void main(String[] args) {
 
-        //Factory
+        //Factory + Supplier
+        System.out.println("__________________FACTORY + SUPPLIER_____________________");
         Supplier<InstrumentFactory> instrumentFactorySupplier = InstrumentFactory::new;
 
-        instrumentFactorySupplier.get().getInstrument(InstrumentType.ELECTRIC_GUITAR.toString()).numberOfStrings(InstrumentType.ELECTRIC_GUITAR);
-        instrumentFactorySupplier.get().getInstrument(InstrumentType.BASS_GUITAR.toString()).numberOfStrings(InstrumentType.BASS_GUITAR);
-        instrumentFactorySupplier.get().getInstrument(InstrumentType.BALALAIKA.toString()).numberOfStrings(InstrumentType.BALALAIKA);
+        ElectricGuitar electricGuitar = (ElectricGuitar)instrumentFactorySupplier.get().
+                getStringInstrument(InstrumentType.ELECTRIC_GUITAR.toString());
+        electricGuitar.numberOfStrings(InstrumentType.ELECTRIC_GUITAR);
+
+        BassGuitar bassGuitar = (BassGuitar)instrumentFactorySupplier.get().
+                getStringInstrument(InstrumentType.BASS_GUITAR.toString());
+        bassGuitar.numberOfStrings(InstrumentType.BASS_GUITAR);
+
+        Balalaika balalaika = (Balalaika)instrumentFactorySupplier.get().
+                getStringInstrument(InstrumentType.BALALAIKA.toString());
+        balalaika.numberOfStrings(InstrumentType.BALALAIKA);
 
         //Visitor
+        System.out.println("__________________VISITOR_____________________");
         StringInstrumentsHolder stringInstrumentsHolder = new StringInstrumentsHolder(Arrays.asList(
                 new ElectricGuitar(),
                 new BassGuitar(),
+                BassGuitar.create(5, 88.9),
+                BassGuitar.create(4, 86.36),
                 new Balalaika()));
         Visitor visitor = mensurInInchesVisitor;
         stringInstrumentsHolder.accept(visitor);
+
+        //Flyweight
+        System.out.println("__________________FLYWEIGHT_____________________");
+        Banjo firstBanjo = Banjo.create(6, true);
+        Banjo secondBanjo = Banjo.create(5, false);
+        Banjo thirdBanjo = Banjo.create(6, true);
+
+        //Memento
+        System.out.println("__________________MEMENTO_____________________");
+        Originator originator = new Originator();
+        Caretaker caretaker = new Caretaker();
+
+        originator.setState(MementoState.ON);
+        System.out.println("State is " + originator.getState());
+        caretaker.setMemento(originator.saveState());
+
+        originator.setState(MementoState.OFF);
+        System.out.println("State is " + originator.getState());
+
+        originator.restoreState(caretaker.getMemento());
+        System.out.println("State is " + originator.getState());
     }
 
 
